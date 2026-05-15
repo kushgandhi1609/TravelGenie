@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: travelgenie-api
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: CORS_ORIGIN
+        value: https://your-vercel-frontend.vercel.app
+      - key: NODE_ENV
+        value: production
