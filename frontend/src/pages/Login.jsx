@@ -8,14 +8,25 @@ function Login() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    const { data } = await api.post('/auth/login', {
-      email,
-      password,
-    });
+    try {
+      const { data } = await api.post('/auth/login', {
+        email,
+        password,
+      });
 
-    localStorage.setItem('userInfo', JSON.stringify(data));
+      localStorage.setItem('userInfo', JSON.stringify(data));
 
-    alert('Login Successful');
+      alert('Login Successful');
+
+    } catch (error) {
+      console.log(error);
+
+      if (error.response) {
+        alert(error.response.data.message || 'Login Failed');
+      } else {
+        alert('Failed to connect to server');
+      }
+    }
   };
 
   return (
@@ -32,6 +43,7 @@ function Login() {
           className="border p-2 w-full mb-4"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
@@ -40,9 +52,10 @@ function Login() {
           className="border p-2 w-full mb-4"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
-        <button className="bg-blue-600 text-white w-full p-2 rounded-lg">
+        <button className="bg-blue-600 text-white w-full p-2 rounded-lg hover:bg-blue-700 transition">
           Login
         </button>
       </form>

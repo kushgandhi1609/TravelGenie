@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+const API = import.meta.env.VITE_API_URL;
+
 const CreateTrip = () => {
   const [formData, setFormData] = useState({
     destination: '',
@@ -23,7 +25,7 @@ const CreateTrip = () => {
       setLoading(true);
 
       const response = await axios.post(
-        'http://localhost:8000/api/ai/itinerary',
+        `${API}/api/ai/itinerary`,
         formData
       );
 
@@ -50,7 +52,13 @@ const CreateTrip = () => {
 
     } catch (error) {
       console.log(error);
-      alert('Failed to generate trip');
+
+      if (error.response) {
+        alert(error.response.data.message || 'Server Error');
+      } else {
+        alert('Failed to connect to backend');
+      }
+
     } finally {
       setLoading(false);
     }

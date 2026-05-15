@@ -9,13 +9,28 @@ function Signup() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    await api.post('/auth/register', {
-      name,
-      email,
-      password,
-    });
+    try {
+      await api.post('/auth/register', {
+        name,
+        email,
+        password,
+      });
 
-    alert('Signup Successful');
+      alert('Signup Successful');
+
+      setName('');
+      setEmail('');
+      setPassword('');
+
+    } catch (error) {
+      console.log(error);
+
+      if (error.response) {
+        alert(error.response.data.message || 'Signup Failed');
+      } else {
+        alert('Failed to connect to server');
+      }
+    }
   };
 
   return (
@@ -32,6 +47,7 @@ function Signup() {
           className="border p-2 w-full mb-4"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          required
         />
 
         <input
@@ -40,6 +56,7 @@ function Signup() {
           className="border p-2 w-full mb-4"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
@@ -48,9 +65,10 @@ function Signup() {
           className="border p-2 w-full mb-4"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
-        <button className="bg-blue-600 text-white w-full p-2 rounded-lg">
+        <button className="bg-blue-600 text-white w-full p-2 rounded-lg hover:bg-blue-700 transition">
           Signup
         </button>
       </form>
